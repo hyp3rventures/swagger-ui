@@ -15899,12 +15899,12 @@ a.btn.btn-danger {
 }
 .btn.btn-primary,
 a.btn.btn-primary {
-    background-color: #44c7f4;
+    background-color: #f73d56;
     border-color: transparent;
 }
 .btn.btn-primary:hover,
 a.btn.btn-primary:hover {
-    background-color: #0c9dce;
+    background-color: #f96277;
 }
 .btn:active,
 a.btn:active {
@@ -16104,7 +16104,7 @@ p {
     line-height: 1.8;
 }
 a {
-    color: #0a86b1;
+    color: #f26277;
 }
 a:focus {
     outline: 0;
