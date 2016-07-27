@@ -15417,9 +15417,10 @@ Copyright (c) 2015 Daniel Eden
 
 header.site-header.site-header {
     z-index: 1000;
-    background: transparent;
     font-size: 14px;
     position: static;
+    height: 66px;
+    background: #37414E;
 }
 header.site-header.site-header.header-fixed {
     background: rgba(255,255,255,0.8);
@@ -15432,15 +15433,13 @@ header.site-header.site-header li * {
     -webkit-backface-visibility: hidden !important;
 }
 header.site-header.site-header .navbar-header {
-    margin-right: -15px;
-    margin-left: -15px;
+    margin-right: 0;
+    margin-left: 0;
     float: none;
-    padding-bottom: 5px;
+    height: inherit;
 }
 @media (min-width: 992px) {
     header.site-header.site-header .navbar-header {
-        margin-right: 0;
-        margin-left: 0;
         float: left;
     }
 }
@@ -15459,34 +15458,30 @@ header.site-header.site-header nav li {
 }
 header.site-header.site-header nav .navbar-brand {
     font-weight: bold;
+    background: #F73D56;
     margin: 0;
     display: inline-block;
     float: left;
     font-size: 24px;
-    margin-right: 20px;
     color: #000;
-    padding: 0 15px 0 15px;
-    margin: 0;
-    width: 120px;
+    padding: 15px;
+    width: 210px;
+    height: inherit;
 }
 header.site-header.site-header nav .navbar-brand a {
-    background: url("../images/senodio.png") center left no-repeat;
-    /*background-size: 76%;*/
-    width: 130px;
-    height: 40px;
+    width: 100%;
+    height: 100%;
     display: block;
-    margin-top: 5px;
+    margin: 0;
     background-size: 48%;
 }
 header.site-header.site-header nav .navbar-brand img {
     position: relative;
-    height: 36px;
-    margin-right: 10px;
+    height: 30px;
+    width: 120px;
+    margin: auto;
     top: 2px;
-    display: none;
-}
-header.site-header.site-header nav .navbar-brand span {
-    display: none;
+    display: inherit;
 }
 header.site-header.site-header .navbar-default .navbar-collapse {
     border-color: transparent;
