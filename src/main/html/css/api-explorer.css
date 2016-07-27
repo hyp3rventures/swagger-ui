@@ -833,7 +833,7 @@
 }
 
 .swagger-section .token-generator .scope-selector .controls {
-    width: calc(100% - 55px)
+    width: 100%
 }
 
 .swagger-section .token-generator .scope-selector .cta {
@@ -1383,7 +1383,9 @@
 
 .site-header .container {
     max-width: none !important;
-    width: 100%
+    width: 100%;
+    padding: 0;
+    height: inherit;
 }
 
 body {
