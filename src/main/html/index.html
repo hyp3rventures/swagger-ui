@@ -211,7 +211,7 @@
     </script>
 </head>
 
-<body class="page-docs" style="zoom: 1;" data-spy="scroll" data-target="#navbar-collapse" data-offset="66">
+<body class="page-docs" style="zoom: 1;" data-spy="scroll" data-target="#navbar-collapse" data-offset="86">
 <header class="site-header">
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -226,16 +226,69 @@
                     <li><a href="#Section_Header_Overview">Overview</a></li>
                     <li><a href="#Section_Header_Auth">Authentication</a></li>
                     <li><a href="#Section_Header_Responses">Responses</a></li>
-                    <li><a href="#api2-explorer">API Endpoints</a></li>
+                    <li><a href="#Section_Header_API">API Endpoints</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
 <section class="content">
-    <div id="Section_Header_Overview">Overview</div>
-    <div id="Section_Header_Auth">Authentication</div>
-    <div id="Section_Header_Responses">Responses</div>
+    <div class="container">
+        <h2 id="Section_Header_Overview">Overview</h2>
+        <p>
+            The HYP3R API provides methods for accessing enriched CRM information such as social media usernames.
+            The API also has an asynchronous endpoint where you can push your CRM information so it may be merged with
+            HYP3R's data. In spirit with the RESTful model, each resource is associated with a URL. For example, your
+            user information can be found at:
+        </p>
+        <div class="swagger-section">
+            <pre>https://profil3r.hyp3r.co/api/v1/users/{id}</pre>
+        </div>
+        <p>
+            where <code>id</code> is your userId. Given a resource you can then drill down into it's subresources.
+            For example, all venues associated with your user can be found at:
+        </p>
+        <div class="swagger-section">
+            <pre>https://profil3r.hyp3r.co/api/v1/users/{id}/venues</pre>
+        </div>
+        <p>
+            Each returned venue would then have its own ID, which corresponds to its own resource URL, for example:
+        </p>
+        <div class="swagger-section">
+            <pre>https://profil3r.hyp3r.co/api/v1/venues/{id}</pre>
+        </div>
+        <p>
+            Every resource in the HYP3R API includes a <code>links</code> object that lists it's <code>self</code>
+            link which is it's resource URL. The venue above, for example, would have the <code>links</code> object
+            below:
+        </p>
+        <div class="swagger-section">
+            <pre><code class="json"><span class="value">  [
+    {
+      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/venues/{id}"</span></span>,
+      "<span class="attribute">rel</span>": <span class="value"><span class="string">"self"</span></span>
+    }</span>
+  ]</span></code></pre>
+        </div>
+    </div>
+</section>
+<hr>
+<section class="content">
+    <div class="container">
+        <h2 id="Section_Header_Auth">Authentication</h2>
+    </div>
+</section>
+<hr>
+<section class="content">
+    <div class="container">
+        <h2 id="Section_Header_Responses">Authentication</h2>
+    </div>
+</section>
+<hr>
+<section class="content">
+    <div class="container">
+        <h2 id="Section_Header_API">API Documentation</h2>
+    </div>
     <div id="api2-explorer">
         <div class="swagger-section page-docs" style="zoom: 1">
             <div class="main-section">
