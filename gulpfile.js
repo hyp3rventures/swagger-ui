@@ -80,6 +80,8 @@ gulp.task('less', ['clean'], function() {
 
   return gulp
     .src([
+      './src/main/less/index.less',
+      './src/main/less/standalone.less',
       './src/main/less/screen.less',
       './src/main/less/print.less',
       './src/main/less/reset.less'
@@ -113,7 +115,7 @@ gulp.task('copy', ['less'], function() {
  * Watch for changes and recompile
  */
 gulp.task('watch', function() {
-  return watch(['./src/**/*.{js,less,handlebars}'], function() {
+  return watch(['./src/**/*.{js,less,handlebars,html}'], function() {
     gulp.start('default');
   });
 });
