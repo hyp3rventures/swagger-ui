@@ -76,6 +76,10 @@
                         $('#input_apiKey').val(swaggerUi.options.apiKey);
                     }
 
+                    $('.sticky-nav [data-resource]').click(function () {
+                        scrollBy(0, -66);
+                    });
+
                     $("[data-toggle='tooltip']").tooltip();
 
                     addApiKeyAuthorization();
@@ -202,11 +206,11 @@
 
     <script type="text/javascript">
         $(function () {
-            $('.navbar-nav li a').click(function(event) {
-                event.preventDefault();
-                $($(this).attr('href'))[0].scrollIntoView();
-                scrollBy(0, -66);
-            });
+          $('.navbar-nav li a, .scroll_link').click(function(event) {
+            event.preventDefault();
+            $($(this).attr('href'))[0].scrollIntoView();
+            scrollBy(0, -66);
+          });
         });
     </script>
 </head>
@@ -225,15 +229,15 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#Section_Header_Overview">Overview</a></li>
                     <li><a href="#Section_Header_Auth">Authentication</a></li>
-                    <li><a href="#Section_Header_Responses">Responses</a></li>
+                    <li><a href="#Section_Header_Conventions">API Conventions</a></li>
                     <li><a href="#Section_Header_API">API Endpoints</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-<section class="content">
-    <div class="container">
+<section class="container">
+    <div class="row">
         <h2 id="Section_Header_Overview">Overview</h2>
         <p>
             The HYP3R API provides methods for accessing enriched CRM information such as social media usernames.
@@ -270,25 +274,116 @@
     }</span>
   ]</span></code></pre>
         </div>
+        <h4>Root Endpoint</h4>
+        <p>
+            You can use a <code>GET</code> request on your root endpoint:
+        </p>
+        <div class="swagger-section">
+            <pre>https://profil3r.hyp3r.co/api/v1/users/identity</pre>
+        </div>
+        <p>
+            to get all the endpoints that your user credentials may access. Response samples can be seen
+            <a class="scroll_link" href="#API_User_getIdentityUsingGET">here</a>
+        </p>
+        <h4>Testing and Certification</h4>
+        <p>
+            HYP3R's API Certification simply involves verifying that the messages we receive on our test endpoint
+            contain the required information and are properly formatted. Please see the step by step process below:
+        </p>
+        <p>
+            <ol>
+                <li>
+                    Provide HYP3R with a list of venues and their respective ids in your CRM so we can properly map
+                    them on our end. These ids should be the same <code>externalVenueId</code> that will be sent to
+                    HYP3R from this particular integration
+                </li>
+                <li>
+                    HYP3R will provision you an API username and password to our API test endpoint:
+                    <ul>
+                        <li>
+                            The testing endpoint is: <code>https://profil3r-staging.hyp3r.com/api/v1</code>
+                        </li>
+                        <li>During certification, all endpoints in this document are relative to the above URL</li>
+                        <li>
+                            Review the <a class="scroll_link" href="#Section_Header_Auth">Authentication</a> section and verify that you
+                            can authenticate against the test endpoint. Make sure to replace the url with the test url.
+                        </li>
+                        <li>
+                            Contact us if there are any issues with your credentials
+                            (i.e. API responds with 401 status code)
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Review the <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a> API
+                    endpoint to understand the what data we need.
+                    <ul>
+                        <li>
+                            Confirm that your system can push to us the required fields in the
+                            <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a>
+                            <code>Body Sample</code> section
+                        </li>
+                        <li>
+                            The endpoint can receive batched account pushes. Pushes are handled asynchronously, and API
+                            always returns a <code>202</code> status unless a server error occurs (i.e. <code>500</code>
+                            status).
+                        </li>
+                        <li>
+                            Since the pushes are handled asynchronously, the API responds with a <code>successCount</code>
+                            and <code>errorCount</code> as well as a list of errors with <code>JSONPath</code> identifiers
+                            to help the developer address issues. Please consult the information in the API response
+                            body for more information on why error occurred. The API does not retry invalid account pushes.
+                            It is the developer's responsibility to retry after fixing.
+                        </li>
+                        <li>
+                            Consult the <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a>
+                            <code>Response Sample</code> section to see what the error summary response looks like.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    When ready, send test CRM Accounts to the test endpoint. HYP3R will confirm receipt and accuracy
+                    of messages. Upon successful certification with our test environment, HYP3R will then provide
+                    credentials to our production environment
+                </li>
+            </ol>
+        </p>
     </div>
-</section>
-<hr>
-<section class="content">
-    <div class="container">
+    <hr>
+    <div class="row">
         <h2 id="Section_Header_Auth">Authentication</h2>
+        <p>
+            Authentication is performed via two custom HYP3R headers and all requests must be made over HTTPS. A
+            username and API key will be provided during the setup process. You can verify your credentials via a
+            <code>GET</code> request to your <a class="scroll_link" href="#API_User_getIdentityUsingGET">Identity</a>
+            root endpoint.
+        </p>
+        <p>
+            The two required headers are <code>X-Hyp3r-Username</code> and <code>X-Hyp3r-Api-Key</code>. Requests that
+            require authentication will return <code>401 Unauthorized</code> if the credentials are invalid and
+            <code>403 Forbidden</code> if the resource is not available to your credentials. In some instances, the
+            API may also return <code>404 Not Found</code> if the resource is not associated with your credentials.
+        </p>
+        <p>
+            Below is a sample curl request to test your credentials:
+        </p>
+        <div class="swagger-section">
+            <pre>
+                
+curl -H 'X-Hyp3r-Username: developer@hyp3r.com' -H 'X-Hyp3r-Api-Key: 108cc33ac430856e6bfc06c92e4aa782' -H 'Accept: application/json' 'https://profil3r.hyp3r.co/api/v1/users/identity'
+            </pre>
+        </div>
     </div>
-</section>
-<hr>
-<section class="content">
-    <div class="container">
-        <h2 id="Section_Header_Responses">Authentication</h2>
+    <hr>
+    <div class="row">
+        <h2 id="Section_Header_Conventions">API Conventions</h2>
     </div>
-</section>
-<hr>
-<section class="content">
-    <div class="container">
+    <hr>
+    <div class="row">
         <h2 id="Section_Header_API">API Documentation</h2>
     </div>
+</section>
+<section class="content">
     <div id="api2-explorer">
         <div class="swagger-section page-docs" style="zoom: 1">
             <div class="main-section">
