@@ -215,7 +215,7 @@
     </script>
 </head>
 
-<body class="page-docs" style="zoom: 1;" data-spy="scroll" data-target="#navbar-collapse" data-offset="86">
+<body class="page-docs" style="zoom: 1;" data-spy="scroll" data-target="#navbar-collapse" data-offset="110">
 <header class="site-header">
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -271,7 +271,7 @@
     {
       "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/venues/{id}"</span></span>,
       "<span class="attribute">rel</span>": <span class="value"><span class="string">"self"</span></span>
-    }</span>
+    }
   ]</span></code></pre>
         </div>
         <h4>Root Endpoint</h4>
@@ -369,7 +369,7 @@
         </p>
         <div class="swagger-section">
             <pre>
-                
+
 curl -H 'X-Hyp3r-Username: developer@hyp3r.com' -H 'X-Hyp3r-Api-Key: 108cc33ac430856e6bfc06c92e4aa782' -H 'Accept: application/json' 'https://profil3r.hyp3r.co/api/v1/users/identity'
             </pre>
         </div>
@@ -377,10 +377,149 @@ curl -H 'X-Hyp3r-Username: developer@hyp3r.com' -H 'X-Hyp3r-Api-Key: 108cc33ac43
     <hr>
     <div class="row">
         <h2 id="Section_Header_Conventions">API Conventions</h2>
+        <h4>Hypermedia</h4>
+        <p>
+            All resources have one or more <code>link</code> objects under the <code>links</code> field. The
+            <code>self</code> link is it's identifier, while the rest link to other available resources. These are
+            meant to provide explicit URLs so that proper API clients don't need to construct URLs on their own.
+            It is highly recommended that API clients use these. Doing so will make future upgrades of the
+            API easier for developers. Below is a sample <code>links</code> object from the
+            <a class="scroll_link" href="#API_User_getIdentityUsingGET">Identity</a> root endpoint.
+        </p>
+        <div class="swagger-section">
+            <pre><code class="json"><span class="value">  [
+    {
+      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1"</span></span>,
+      "<span class="attribute">rel</span>": <span class="value"><span class="string">"self"</span></span>
+    },
+    {
+      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1/venues"</span></span>,
+      "<span class="attribute">rel</span>": <span class="value"><span class="string">"venues"</span></span>
+    },
+    {
+      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1/crmaccounts"</span></span>,
+      "<span class="attribute">rel</span>": <span class="value"><span class="string">"crmaccounts"</span></span>
+    },
+    {
+      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1/crmaccounts/_import"</span></span>,
+      "<span class="attribute">rel</span>": <span class="value"><span class="string">"importCrmAccounts"</span></span>
+    }
+  ]</span></code></pre>
+        </div>
+        <h4>Pagination</h4>
+        <p>
+            Requests that return multiple items will be paginated to 10 items by default. You can specify
+            further pages with the <code>page</code> parameter. You can also set a custom page size up to 100 with the
+            <code>size</code> parameter. More details are specified per resource in the
+            <a class="scroll_link" href="#Section_Header_API">API Endpoints</a>.
+        </p>
+        <p>
+            Paginated resources also return <code>first</code>, <code>prev</code>, <code>next</code>, and
+            <code>last</code> links when applicable (i. e. if already on last page, the <code>last</code> and
+            <code>next</code> links do not appear. In addition, the <code>page</code> object below is included in the
+            body.
+        </p>
+        <div class="swagger-section">
+            <pre><code class="json"><span class="value">  {
+    "<span class="attribute">number</span>": <span class="value"><span class="number">0</span></span>,
+    "<span class="attribute">size</span>": <span class="value"><span class="number">0</span></span>,
+    "<span class="attribute">totalElements</span>": <span class="value"><span class="number">0</span></span>,
+    "<span class="attribute">totalPages</span>": <span class="value"><span class="number">0</span>
+  }</span></span></code></pre>
+        </div>
+        <p>Note that page numbering is 0-based and that omitting the <code>page</code> parameter will return the first page.</p>
+        <h4>HTTP Status Codes</h4>
+        <p>
+            As much as possible, HYP3R attempts to use appropriate HTTP status codes for responses:
+        </p>
+        <table class="table table-striped">
+            <colgroup>
+                <col span="1" style="width: 20%;">
+                <col span="1" style="width: 80%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Status Code</th>
+                <th>Explanation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>200 OK</td>
+                <td>Any <code>GET</code> request that returns successfully will return 200 as its status.</td>
+            </tr>
+            <tr>
+                <td>202 Accepted</td>
+                <td>
+                    Since pushes are handled asynchronously, the
+                    <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a>
+                    API endpoint always returns a <code>202</code> status unless a server error occurs (i.e.
+                    <code>500</code> status).
+                </td>
+            </tr>
+            <tr>
+                <td>400 Bad Request</td>
+                <td>
+                    Any case where a parameter is invalid, or a required parameter is missing. Consult individual
+                    endpoints for more details on parameters.
+                </td>
+            </tr>
+            <tr>
+                <td>401 Unauthorized</td>
+                <td>
+                    The authentication credentials are invalid or missing.
+                </td>
+            </tr>
+            <tr>
+                <td>403 Forbidden</td>
+                <td>
+                    The requested information cannot be viewed by the acting user (e.g. A venue that is not associated
+                    to the user's company).
+                </td>
+            </tr>
+            <tr>
+                <td>404 Not Found</td>
+                <td>
+                    Endpoint does not exist or resource with provided id does not exist.
+                </td>
+            </tr>
+            <tr>
+                <td>405 Method Not Allowed</td>
+                <td>Attempting to use POST with a GET-only endpoint, or vice-versa.</td>
+            </tr>
+            <tr>
+                <td>500 Internal Server Error</td>
+                <td>
+                    HYP3R's servers are unhappy. The request is probably valid but needs to be retried later. If you
+                    continue receiving <code>500</code> responses, please contact HYP3R.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            In the event of errors (400 - 500 statuses), the response body will include additional details (shown below)
+            that the developer can use for debugging. Use the feedback in the <code>message</code> field to fix your
+            error.
+        </p>
+        <div class="swagger-section">
+            <pre><code class="json"><span class="value">  {
+    "<span class="attribute">timestamp</span>": <span class="value"><span class="string">"2016-12-07T17:47:15.525+0000"</span></span>,
+    "<span class="attribute">status</span>": <span class="value"><span class="number">404</span></span>,
+    "<span class="attribute">error</span>": <span class="value"><span class="string">"Not Found"</span></span>,
+    "<span class="attribute">message</span>": <span class="value"><span class="string">"Resource with given id does not exist"</span></span>,
+    "<span class="attribute">path</span>": <span class="value"><span class="string">"/api/v1/venues/0"</span></span>
+  }</span></span></code></pre>
+        </div>
+        <h4>Rate Limits</h4>
+        <p>TBD</p>
     </div>
     <hr>
     <div class="row">
-        <h2 id="Section_Header_API">API Documentation</h2>
+        <h2 id="Section_Header_API">API Endpoints</h2>
+        <p>
+            Before diving into the endpoints, please review the sections above for an overview of high-level concepts and
+            use cases.
+        </p>
     </div>
 </section>
 <section class="content">
