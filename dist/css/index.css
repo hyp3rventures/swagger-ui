@@ -15869,6 +15869,7 @@ header.site-header.site-header .dropdown .dropdown-menu li > a {
   padding: 10px 15px;
   line-height: 20px;
   height: auto;
+  color: #37414e;
 }
 @media (min-width: 992px) {
   header.site-header.site-header .dropdown .dropdown-menu li > a {
