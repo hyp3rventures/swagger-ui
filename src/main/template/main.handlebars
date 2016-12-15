@@ -8,16 +8,18 @@
             <div class="token-generator hide">
                 <span data-close class="icon-budicon-471"></span>
                 <div class="scope-selector">
-                    <label for="scopes">Authentication</label>
-
                     <div class="area controls">
-                        <input type="text" autocorrect="off" class="ui-form-control" id="input_username"
-                               placeholder="Username">
+                        <div class="form-group">
+                            <label id="input_username_label" for="input_username">Username</label>
+                            <input type="text" class="ui-form-control" id="input_username">
+                        </div>
                     </div>
                     <br>
-                    <div class="area controls" style="margin-top: 5px">
-                        <input type="password" autocorrect="off" class="ui-form-control" id="input_password"
-                               placeholder="Password">
+                    <div class="area controls">
+                        <div class="form-group">
+                            <label id="input_password_label" for="input_password">Password</label>
+                            <input type="password" autocorrect="off" class="ui-form-control" id="input_password">
+                        </div>
                     </div>
                 </div>
 

@@ -850,7 +850,6 @@
 }
 
 .swagger-section .token-generator label {
-    text-transform: uppercase;
     letter-spacing: .08em;
     font-size: 12px;
     font-weight: 700;
