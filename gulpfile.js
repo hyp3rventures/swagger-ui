@@ -65,9 +65,8 @@ gulp.task('dist', ['clean'], function() {
     .pipe(wrap('(function(){<%= contents %>}).call(this);'))
     .pipe(header(banner, { pkg: pkg } ))
     .pipe(gulp.dest('./dist'))
+    .pipe(rename('swagger-ui.min.js'))
     .pipe(uglify())
-    .on('error', log)
-    .pipe(rename({extname: '.min.js'}))
     .on('error', log)
     .pipe(gulp.dest('./dist'))
     .pipe(connect.reload());
