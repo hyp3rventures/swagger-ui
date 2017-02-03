@@ -16160,8 +16160,11 @@ a.btn.btn-primary:hover,
 .btn.btn-primary:active,
 a.btn.btn-primary:active,
 .btn.btn-primary.active,
-a.btn.btn-primary.active {
+a.btn.btn-primary.active,
+.btn.btn-primary.active:hover,
+a.btn.btn-primary.active:hover {
   background-color: #f96277;
+  border-color: #FFFFFF;
 }
 .btn:active,
 a.btn:active {
