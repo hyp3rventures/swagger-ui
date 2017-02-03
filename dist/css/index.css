@@ -16153,10 +16153,12 @@ a.btn.btn-danger {
 .btn.btn-primary,
 a.btn.btn-primary {
   background-color: #f73d56;
-  border-color: transparent;
+  border-color: #FFFFFF;
 }
 .btn.btn-primary:hover,
-a.btn.btn-primary:hover {
+a.btn.btn-primary:hover,
+.btn.btn-primary:active,
+a.btn.btn-primary:active {
   background-color: #f96277;
 }
 .btn:active,
