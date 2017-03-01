@@ -132,128 +132,23 @@
 </header>
 <section class="container">
     <div class="row">
-        <h2 id="Section_Header_Overview">Overview</h2>
+        <h2 id="Section_Header_Overview">Introduction</h2>
         <p>
-            The HYP3R API provides methods for accessing enriched CRM information such as social media usernames.
-            The API also has an asynchronous endpoint where you can push your CRM information so it may be merged with
-            HYP3R's data. In spirit with the RESTful model, each resource is associated with a URL. For example, your
-            user information can be found at:
-        </p>
-        <div class="swagger-section">
-            <pre>https://profil3r.hyp3r.co/api/v1/users/{id}</pre>
-        </div>
-        <p>
-            where <code>id</code> is your userId. Given a resource you can then drill down into it's subresources.
-            For example, all venues associated with your user can be found at:
-        </p>
-        <div class="swagger-section">
-            <pre>https://profil3r.hyp3r.co/api/v1/users/{id}/venues</pre>
-        </div>
-        <p>
-            Each returned venue would then have its own ID, which corresponds to its own resource URL, for example:
-        </p>
-        <div class="swagger-section">
-            <pre>https://profil3r.hyp3r.co/api/v1/venues/{id}</pre>
-        </div>
-        <p>
-            Every resource in the HYP3R API includes a <code>links</code> object that lists it's <code>self</code>
-            link which is it's resource URL. The venue above, for example, would have the <code>links</code> object
-            below:
-        </p>
-        <div class="swagger-section">
-            <pre><code class="json"><span class="value">  [
-    {
-      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/venues/{id}"</span></span>,
-      "<span class="attribute">rel</span>": <span class="value"><span class="string">"self"</span></span>
-    }
-  ]</span></code></pre>
-        </div>
-        <h4>Root Endpoint</h4>
-        <p>
-            You can use a <code>GET</code> request on your root endpoint:
-        </p>
-        <div class="swagger-section">
-            <pre>https://profil3r.hyp3r.co/api/v1/users/identity</pre>
-        </div>
-        <p>
-            to get all the endpoints that your user credentials may access. Response samples can be seen
-            <a class="scroll_link" href="#API_User_getIdentityUsingGET">here</a>
-        </p>
-        <h4>Testing and Certification</h4>
-        <p>
-            HYP3R's API Certification simply involves verifying that the messages we receive on our test endpoint
-            contain the required information and are properly formatted. Please see the step by step process below:
-        </p>
-        <p>
-            <ol>
-                <li>
-                    Provide HYP3R with a list of venues and their respective ids in your CRM so we can properly map
-                    them on our end. These ids should be the same <code>externalVenueId</code> that will be sent to
-                    HYP3R from this particular integration
-                </li>
-                <li>
-                    HYP3R will provision you an API username and password to our API test endpoint:
-                    <ul>
-                        <li>
-                            The testing endpoint is: <code>https://profil3r-staging.hyp3r.com/api/v1</code>
-                        </li>
-                        <li>During certification, all endpoints in this document are relative to the above URL</li>
-                        <li>
-                            Review the <a class="scroll_link" href="#Section_Header_Auth">Authentication</a> section and verify that you
-                            can authenticate against the test endpoint. Make sure to replace the url with the test url.
-                        </li>
-                        <li>
-                            Contact us if there are any issues with your credentials
-                            (i.e. API responds with 401 status code)
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    Review the <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a> API
-                    endpoint to understand the what data we need.
-                    <ul>
-                        <li>
-                            Confirm that your system can push to us the required fields in the
-                            <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a>
-                            <code>Body Sample</code> section
-                        </li>
-                        <li>
-                            The endpoint can receive batched account pushes. Pushes are handled asynchronously, and API
-                            always returns a <code>202</code> status unless a server error occurs (i.e. <code>500</code>
-                            status).
-                        </li>
-                        <li>
-                            Since the pushes are handled asynchronously, the API responds with a <code>successCount</code>
-                            and <code>errorCount</code> as well as a list of errors with <code>JSONPath</code> identifiers
-                            to help the developer address issues. Please consult the information in the API response
-                            body for more information on why error occurred. The API does not retry invalid account pushes.
-                            It is the developer's responsibility to retry after fixing.
-                        </li>
-                        <li>
-                            Consult the <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a>
-                            <code>Response Sample</code> section to see what the error summary response looks like.
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    When ready, send test CRM Accounts to the test endpoint. HYP3R will confirm receipt and accuracy
-                    of messages. Upon successful certification with our test environment, HYP3R will then provide
-                    credentials to our production environment
-                </li>
-            </ol>
-        </p>
+        The Hyp3r API is organized around <a href="http://en.wikipedia.org/wiki/Representational_State_Transfer">REST</a>. Our API has predictable, resource-oriented URLs, and uses HTTP response codes to indicate API errors. We use built-in HTTP features, like HTTP authentication and HTTP verbs, which are understood by off-the-shelf HTTP clients. We support <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">cross-origin resource sharing</a>, allowing you to interact securely with our API from a client-side web application (though you should never expose your secret API key in any public website's client-side code). <a href="http://www.json.org/">JSON</a> is returned by all API responses, including errors.
+      </p>
+      <p style="color: lightgray">
+        To make the API as explorable as possible, accounts have test mode and live mode API keys. There is no "switch" for changing between modes, just use the appropriate key to perform a live or test transaction.
+      </p>
+
     </div>
     <hr>
     <div class="row">
         <h2 id="Section_Header_Auth">Authentication</h2>
         <p>
-            Authentication is performed via two custom HYP3R headers and all requests must be made over HTTPS. A
-            username and API key will be provided during the setup process. You can verify your credentials via a
-            <code>GET</code> request to your <a class="scroll_link" href="#API_User_getIdentityUsingGET">Identity</a>
-            root endpoint.
+            Authentication is performed via two custom HYP3R headers and all requests must be made over HTTPS.
         </p>
         <p>
-            The two required headers are <code>X-Hyp3r-Username</code> and <code>X-Hyp3r-Api-Key</code>. Requests that
+            The two required headers are <code>X-Entity-Email</code> and <code>X-Entity-Token</code>. Requests that
             require authentication will return <code>401 Unauthorized</code> if the credentials are invalid and
             <code>403 Forbidden</code> if the resource is not available to your credentials. In some instances, the
             API may also return <code>404 Not Found</code> if the resource is not associated with your credentials.
@@ -264,54 +159,19 @@
         <div class="swagger-section">
             <pre>
 
-curl -H 'X-Hyp3r-Username: developer@hyp3r.com' -H 'X-Hyp3r-Api-Key: 108cc33ac430856e6bfc06c92e4aa782' -H 'Accept: application/json' 'https://profil3r.hyp3r.co/api/v1/users/identity'
+curl -H 'X-Entity-Email: developer@hyp3r.com' -H 'X-Entity-Token: 108cc33ac430856e6bfc06c92e4aa782' -H 'Accept: application/json' 'https://app-staging.hyp3r.co/api/v1/venues/all?organization_id=1'
             </pre>
         </div>
     </div>
     <hr>
     <div class="row">
         <h2 id="Section_Header_Conventions">API Conventions</h2>
-        <h4>Hypermedia</h4>
-        <p>
-            All resources have one or more <code>link</code> objects under the <code>links</code> field. The
-            <code>self</code> link is it's identifier, while the rest link to other available resources. These are
-            meant to provide explicit URLs so that proper API clients don't need to construct URLs on their own.
-            It is highly recommended that API clients use these. Doing so will make future upgrades of the
-            API easier for developers. Below is a sample <code>links</code> object from the
-            <a class="scroll_link" href="#API_User_getIdentityUsingGET">Identity</a> root endpoint.
-        </p>
-        <div class="swagger-section">
-            <pre><code class="json"><span class="value">  [
-    {
-      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1"</span></span>,
-      "<span class="attribute">rel</span>": <span class="value"><span class="string">"self"</span></span>
-    },
-    {
-      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1/venues"</span></span>,
-      "<span class="attribute">rel</span>": <span class="value"><span class="string">"venues"</span></span>
-    },
-    {
-      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1/crmaccounts"</span></span>,
-      "<span class="attribute">rel</span>": <span class="value"><span class="string">"crmaccounts"</span></span>
-    },
-    {
-      "<span class="attribute">href</span>": <span class="value"><span class="string">"https://profil3r.hyp3r.co/api/v1/users/1/crmaccounts/_import"</span></span>,
-      "<span class="attribute">rel</span>": <span class="value"><span class="string">"importCrmAccounts"</span></span>
-    }
-  ]</span></code></pre>
-        </div>
         <h4>Pagination</h4>
         <p>
-            Requests that return multiple items will be paginated to 10 items by default. You can specify
-            further pages with the <code>page</code> parameter. You can also set a custom page size up to 100 with the
-            <code>size</code> parameter. More details are specified per resource in the
+            Requests that return multiple items will be paginated to 27 items by default. You can specify
+            further pages with the <code>page</code> parameter. You can also set a custom page size up to 200 with the
+            <code>per_page</code> parameter. More details are specified per resource in the
             <a class="scroll_link" href="#Section_Header_API">API Endpoints</a>.
-        </p>
-        <p>
-            Paginated resources also return <code>first</code>, <code>prev</code>, <code>next</code>, and
-            <code>last</code> links when applicable (i. e. if already on last page, the <code>last</code> and
-            <code>next</code> links do not appear. In addition, the <code>page</code> object below is included in the
-            body.
         </p>
         <div class="swagger-section">
             <pre><code class="json"><span class="value">  {
@@ -323,89 +183,16 @@ curl -H 'X-Hyp3r-Username: developer@hyp3r.com' -H 'X-Hyp3r-Api-Key: 108cc33ac43
         </div>
         <p>Note that page numbering is 0-based and that omitting the <code>page</code> parameter will return the first page.</p>
         <h4>HTTP Status Codes</h4>
+
         <p>
-            As much as possible, HYP3R attempts to use appropriate HTTP status codes for responses:
+        The API uses conventional HTTP response codes to indicate the
+        success or failure of an API request.  In general,
+        codes in the <code>2xx</code> range indicate success, codes in the
+        <code>4xx</code> range indicate an error that failed given the
+        information provided (e.g., a required parameter was
+        omitted, a charge failed, etc.), and codes in the <code>5xx</code>
+        range indicate an error with the servers.
         </p>
-        <table class="table table-striped">
-            <colgroup>
-                <col span="1" style="width: 20%;">
-                <col span="1" style="width: 80%;">
-            </colgroup>
-            <thead>
-            <tr>
-                <th>Status Code</th>
-                <th>Explanation</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>200 OK</td>
-                <td>Any <code>GET</code> request that returns successfully will return 200 as its status.</td>
-            </tr>
-            <tr>
-                <td>202 Accepted</td>
-                <td>
-                    Since pushes are handled asynchronously, the
-                    <a class="scroll_link" href="#API_User_importCrmAccountsUsingPOST">Import External CRM Account</a>
-                    API endpoint always returns a <code>202</code> status unless a server error occurs (i.e.
-                    <code>500</code> status).
-                </td>
-            </tr>
-            <tr>
-                <td>400 Bad Request</td>
-                <td>
-                    Any case where a parameter is invalid, or a required parameter is missing. Consult individual
-                    endpoints for more details on parameters.
-                </td>
-            </tr>
-            <tr>
-                <td>401 Unauthorized</td>
-                <td>
-                    The authentication credentials are invalid or missing.
-                </td>
-            </tr>
-            <tr>
-                <td>403 Forbidden</td>
-                <td>
-                    The requested information cannot be viewed by the acting user (e.g. A venue that is not associated
-                    to the user's company).
-                </td>
-            </tr>
-            <tr>
-                <td>404 Not Found</td>
-                <td>
-                    Endpoint does not exist or resource with provided id does not exist.
-                </td>
-            </tr>
-            <tr>
-                <td>405 Method Not Allowed</td>
-                <td>Attempting to use POST with a GET-only endpoint, or vice-versa.</td>
-            </tr>
-            <tr>
-                <td>500 Internal Server Error</td>
-                <td>
-                    HYP3R's servers are unhappy. The request is probably valid but needs to be retried later. If you
-                    continue receiving <code>500</code> responses, please contact HYP3R.
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <p>
-            In the event of errors (400 - 500 statuses), the response body will include additional details (shown below)
-            that the developer can use for debugging. Use the feedback in the <code>message</code> field to fix your
-            error.
-        </p>
-        <div class="swagger-section">
-            <pre><code class="json"><span class="value">  {
-    "<span class="attribute">timestamp</span>": <span class="value"><span class="string">"2016-12-07T17:47:15.525+0000"</span></span>,
-    "<span class="attribute">status</span>": <span class="value"><span class="number">404</span></span>,
-    "<span class="attribute">error</span>": <span class="value"><span class="string">"Not Found"</span></span>,
-    "<span class="attribute">message</span>": <span class="value"><span class="string">"Resource with given id does not exist"</span></span>,
-    "<span class="attribute">path</span>": <span class="value"><span class="string">"/api/v1/venues/0"</span></span>
-  }</span></span></code></pre>
-        </div>
-        <h4>Rate Limits</h4>
-        <p>TBD</p>
     </div>
     <hr>
     <div class="row">
