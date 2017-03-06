@@ -83,7 +83,8 @@ gulp.task('less', ['clean'], function() {
       './src/main/less/standalone.less',
       './src/main/less/screen.less',
       './src/main/less/print.less',
-      './src/main/less/reset.less'
+      './src/main/less/reset.less',
+      './src/main/less/login.less'
     ])
     .pipe(less())
     .on('error', log)
