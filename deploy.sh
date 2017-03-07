@@ -9,7 +9,7 @@
 COLOR_OFF="\033[0m"   # unsets color to term fg color
 GREEN="\033[0;32m"    # green
 CYAN="\033[0;36m"     # cyan
-HEROKU_REMOTE="https://git.heroku.com/hyp3r-docs.git"
+HEROKU_REMOTE="https://git.heroku.com/hyp3r-core-api-docs.git"
 
 echo "\n${GREEN}BUILD PROJECT${COLOR_OFF}\n"
 # build project
