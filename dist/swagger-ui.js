@@ -360,7 +360,9 @@ this["Handlebars"]["templates"]["param_list"] = Handlebars.template({"1":functio
   buffer += "        </select>\n        <div class=\"small-description\">\n";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.type : depth0), {"name":"if","hash":{},"fn":this.program(13, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  return buffer + "            <div class=\"markdown\">"
+  return buffer + "            <div class=\"markdown\">```"
+    + escapeExpression(((helper = (helper = helpers['in'] || (depth0 != null ? depth0['in'] : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"in","hash":{},"data":data}) : helper)))
+    + " Param``` "
     + escapeExpression(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper)))
     + "</div>\n        </div>\n    </div>\n</div>\n\n";
 },"useData":true});
